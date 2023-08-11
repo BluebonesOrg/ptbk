@@ -33,7 +33,7 @@ classdef Element
         function multiText(obj, content, line_height, size, offset, varargin)
 
             if ~exist('line_height', "var") || isempty(line_height)
-                line_height = 0;
+                line_height = 30;
             end
 
             if ~exist('size', "var") || isempty(size)
@@ -107,7 +107,7 @@ classdef Element
                 orig_pic_hw_pix = size(orig_pic_arr); % 图片原始尺寸
                 hw_ratio = orig_pic_hw_pix(1) / orig_pic_hw_pix(2); % 图片高宽比
                 pic_hw_pix = deg2pix(degree .* [hw_ratio, 1]);
-                pic_arr = imresize(orig_pic_arr, pic_hw_pix); % 改变orig_pic_arr大小
+                pic_arr = imresize(orig_pic_arr, pic_hw_pix, 'bicubic'); % 改变orig_pic_arr大小
             end
 
             function pic_pix = deg2pix(pic_deg)
@@ -194,12 +194,18 @@ classdef Element
                         [keyIsDown, ~, keyCode] = KbCheck;
                         keyName = KbName(keyCode);
 
-                        if iscell(keyName) % alt键返回cell数组
+                        if ~keyIsDown
+                            continue;
+                        end
+
+                        if isempty(keyName)
+                            continue;
+                        elseif iscell(keyName) % alt键返回cell数组
                             % keyName(cellfun(@isempty, keyName)) = []; % cell数组去[]
                             keyName = keyName{:}; % 只保留第一个元素
                         end
 
-                        if keyIsDown && callback(GetSecs - startTime, keyName)
+                        if callback(GetSecs - startTime, keyName)
                             break;
                         end
 
