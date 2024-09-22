@@ -1,4 +1,4 @@
-this is a MMATLAB package, which increase the speed of PsychToolbox devlopment and decrease bug.
+this is a MATLAB package, which increase the speed of PsychToolbox devlopment and decrease bug.
 
 add `+PTB` folder path to MATLAB search path to install
 
